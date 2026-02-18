@@ -1,0 +1,24 @@
+server:
+  port: 8080
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/wallstreet-rookie
+      # For MongoDB Atlas use:
+      # uri: mongodb+srv://<user>:<password>@<cluster>.mongodb.net/wallstreet-rookie
+
+  security:
+    user:
+      name: admin  # only used for actuator/dev, not for app auth
+
+app:
+  jwt:
+    secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+    expiration-ms: 86400000  # 24 hours
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
+  api-docs:
+    path: /api-docs
