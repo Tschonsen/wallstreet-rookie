@@ -1,11 +1,10 @@
 import { Client } from '@stomp/stompjs'
-import SockJS from 'sockjs-client'
 
 let stompClient: Client | null = null
 
 export function connectWebSocket(onConnect?: () => void) {
   stompClient = new Client({
-    webSocketFactory: () => new SockJS('/ws'),
+    brokerURL: `ws://${window.location.host}/ws`,
     reconnectDelay: 5000,
     onConnect: () => {
       onConnect?.()
