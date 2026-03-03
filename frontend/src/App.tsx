@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { ConfigProvider, theme } from 'antd'
 import { StoreContext, RootStore } from './stores/RootStore'
+import LoginPage from './pages/LoginPage'
+import ProtectedRoute from './components/ProtectedRoute'
 
 const rootStore = new RootStore()
 
@@ -14,8 +16,16 @@ function App() {
       >
         <BrowserRouter>
           <Routes>
-            <Route path="/login" element={<div>Login Page (TODO)</div>} />
-            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <div>ModeSelect Page (TODO)</div>
+                </ProtectedRoute>
+              }
+            />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>
       </ConfigProvider>
