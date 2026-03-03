@@ -40,9 +40,9 @@ public class PlayerServiceImpl implements PlayerService {
                 .createdAt(Instant.now())
                 .build();
 
-        playerRepository.save(player);
+        player = playerRepository.save(player);
 
-        return buildAuthResponse(player.getUsername());
+        return buildAuthResponse(player.getId(), player.getUsername());
     }
 
     @Override
@@ -54,17 +54,17 @@ public class PlayerServiceImpl implements PlayerService {
             throw new IllegalArgumentException("Ungültige Anmeldedaten");
         }
 
-        return buildAuthResponse(player.getUsername());
+        return buildAuthResponse(player.getId(), player.getUsername());
     }
 
     @Override
-    public Player getCurrentPlayer(String username) {
-        return playerRepository.findByUsername(username)
+    public Player getCurrentPlayer(String userId) {
+        return playerRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Spieler nicht gefunden"));
     }
 
-    private AuthResponse buildAuthResponse(String username) {
-        String token = jwtTokenProvider.generateToken(username);
+    private AuthResponse buildAuthResponse(String userId, String username) {
+        String token = jwtTokenProvider.generateToken(userId);
         Instant expiresAt = jwtTokenProvider.getExpirationFromToken(token);
         return new AuthResponse(token, username, expiresAt);
     }

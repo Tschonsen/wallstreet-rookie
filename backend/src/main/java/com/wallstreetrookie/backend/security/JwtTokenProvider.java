@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Date;
 
@@ -19,23 +20,23 @@ public class JwtTokenProvider {
     public JwtTokenProvider(
             @Value("${app.jwt.secret}") String secret,
             @Value("${app.jwt.expiration-ms}") long expirationMs) {
-        this.key = Keys.hmacShaKeyFor(hexStringToByteArray(secret));
+        this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         this.expirationMs = expirationMs;
     }
 
-    public String generateToken(String username) {
+    public String generateToken(String userId) {
         Instant now = Instant.now();
         Instant expiry = now.plusMillis(expirationMs);
 
         return Jwts.builder()
-                .subject(username)
+                .subject(userId)
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(expiry))
                 .signWith(key)
                 .compact();
     }
 
-    public String getUsernameFromToken(String token) {
+    public String getUserIdFromToken(String token) {
         return parseClaims(token).getSubject();
     }
 
@@ -58,15 +59,5 @@ public class JwtTokenProvider {
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
-    }
-
-    private static byte[] hexStringToByteArray(String hex) {
-        int len = hex.length();
-        byte[] data = new byte[len / 2];
-        for (int i = 0; i < len; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(hex.charAt(i), 16) << 4)
-                    + Character.digit(hex.charAt(i + 1), 16));
-        }
-        return data;
     }
 }

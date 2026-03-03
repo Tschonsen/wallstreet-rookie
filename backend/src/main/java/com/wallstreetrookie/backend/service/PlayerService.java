@@ -11,5 +11,5 @@ public interface PlayerService {
 
     AuthResponse login(LoginRequest request);
 
-    Player getCurrentPlayer(String username);
+    Player getCurrentPlayer(String userId);
 }
