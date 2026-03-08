@@ -35,5 +35,7 @@ public class Player {
 
     private List<PortfolioEntry> portfolio;
 
+    private List<String> watchlist;
+
     private Instant createdAt;
 }

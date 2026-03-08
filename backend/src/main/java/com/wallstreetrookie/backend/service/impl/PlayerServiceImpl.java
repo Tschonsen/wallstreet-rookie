@@ -37,6 +37,7 @@ public class PlayerServiceImpl implements PlayerService {
                 .cash(STARTING_CASH)
                 .totalValue(STARTING_CASH)
                 .portfolio(new ArrayList<>())
+                .watchlist(new ArrayList<>())
                 .createdAt(Instant.now())
                 .build();
 
