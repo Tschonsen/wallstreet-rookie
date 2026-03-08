@@ -19,6 +19,16 @@ function App() {
       <ConfigProvider
         theme={{
           algorithm: theme.darkAlgorithm,
+          token: {
+            colorPrimary: '#1677ff',
+            colorSuccess: '#52c41a',
+            colorError: '#ff4d4f',
+            colorBgContainer: '#1f1f1f',
+            colorBgElevated: '#262626',
+            colorBgLayout: '#141414',
+            borderRadius: 6,
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+          },
         }}
       >
         <AntApp>
