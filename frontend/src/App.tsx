@@ -7,6 +7,7 @@ import DashboardPage from './pages/DashboardPage'
 import TradingPage from './pages/TradingPage'
 import StockDetailPage from './pages/StockDetailPage'
 import PortfolioPage from './pages/PortfolioPage'
+import LeaderboardPage from './pages/LeaderboardPage'
 import ProtectedRoute from './components/ProtectedRoute'
 import AppLayout from './components/AppLayout'
 
@@ -43,6 +44,7 @@ function App() {
                 <Route path="/trading" element={<TradingPage />} />
                 <Route path="/trading/:symbol" element={<StockDetailPage />} />
                 <Route path="/portfolio" element={<PortfolioPage />} />
+                <Route path="/leaderboard" element={<LeaderboardPage />} />
               </Route>
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
