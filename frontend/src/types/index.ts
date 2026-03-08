@@ -76,6 +76,17 @@ export interface PricePoint {
   gameSessionId?: string
 }
 
+export interface OrderEntry {
+  id: string
+  symbol: string
+  orderType: 'LIMIT_BUY' | 'LIMIT_SELL' | 'STOP_LOSS'
+  quantity: number
+  targetPrice: number
+  status: 'OPEN' | 'FILLED' | 'CANCELLED'
+  createdAt: string
+  filledAt: string | null
+}
+
 export interface AuthResponse {
   token: string
   username: string
