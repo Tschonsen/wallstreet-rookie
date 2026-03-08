@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { ConfigProvider, theme } from 'antd'
 import { StoreContext, RootStore } from './stores/RootStore'
 import LoginPage from './pages/LoginPage'
+import LeaderboardPage from './pages/LeaderboardPage'
 import ProtectedRoute from './components/ProtectedRoute'
 
 const rootStore = new RootStore()
@@ -22,6 +23,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <div>ModeSelect Page (TODO)</div>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/leaderboard"
+              element={
+                <ProtectedRoute>
+                  <LeaderboardPage />
                 </ProtectedRoute>
               }
             />
