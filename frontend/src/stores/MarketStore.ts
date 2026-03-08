@@ -1,11 +1,13 @@
 import { makeAutoObservable, runInAction } from 'mobx'
-import type { News, Stock } from '../types'
+import { notification } from 'antd'
+import type { News, Stock, LeaderboardEntry } from '../types'
 import { marketApi } from '../services/marketApi'
 import { connectWebSocket, disconnectWebSocket, subscribe } from '../services/websocket'
 
 export class MarketStore {
   stocks: Stock[] = []
   news: News[] = []
+  leaderboard: LeaderboardEntry[] = []
   loading = false
 
   constructor() {
@@ -33,19 +35,33 @@ export class MarketStore {
     })
   }
 
-  connectWebSocket() {
+  connectWebSocket(onConnected?: () => void) {
     connectWebSocket(() => {
-      subscribe<Stock[]>('/topic/prices', (stocks) => {
+      subscribe<Stock[]>('/topic/market/prices', (stocks) => {
         runInAction(() => {
           this.stocks = stocks
         })
       })
 
-      subscribe<News>('/topic/news', (news) => {
+      subscribe<News>('/topic/market/news', (news) => {
         runInAction(() => {
           this.news = [news, ...this.news]
         })
+        notification.info({
+          message: 'Neue Nachricht',
+          description: news.title,
+          placement: 'topRight',
+          duration: 5,
+        })
       })
+
+      subscribe<LeaderboardEntry[]>('/topic/leaderboard', (leaderboard) => {
+        runInAction(() => {
+          this.leaderboard = leaderboard
+        })
+      })
+
+      onConnected?.()
     })
   }
 

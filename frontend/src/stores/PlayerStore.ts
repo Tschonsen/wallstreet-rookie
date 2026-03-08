@@ -1,5 +1,5 @@
 import { makeAutoObservable, runInAction } from 'mobx'
-import type { Player } from '../types'
+import type { Player, PortfolioResponse } from '../types'
 import { authApi } from '../services/authApi'
 import { playerApi } from '../services/playerApi'
 
@@ -79,5 +79,18 @@ export class PlayerStore {
     runInAction(() => {
       this.player = response.data
     })
+  }
+
+  updateFromWebSocket(data: PortfolioResponse) {
+    this.player = {
+      username: this.username ?? '',
+      cash: data.cash,
+      totalValue: data.totalValue,
+      portfolio: data.positions.map((p) => ({
+        symbol: p.symbol,
+        quantity: p.quantity,
+        averageBuyPrice: p.averageBuyPrice,
+      })),
+    }
   }
 }
