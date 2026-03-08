@@ -50,6 +50,21 @@ export interface LeaderboardEntry {
   totalValue: number
 }
 
+export interface ChatMessage {
+  username: string
+  message: string
+  timestamp: string
+}
+
+export interface TradeFeedEntry {
+  username: string
+  symbol: string
+  action: string
+  quantity: number
+  total: number
+  timestamp: string
+}
+
 export interface AuthResponse {
   token: string
   username: string
