@@ -67,6 +67,15 @@ export interface PortfolioResponse {
   positions: PortfolioPosition[]
 }
 
+export interface PricePoint {
+  symbol: string
+  price: number
+  change: number
+  changePercent: number
+  timestamp: string
+  gameSessionId?: string
+}
+
 export interface AuthResponse {
   token: string
   username: string

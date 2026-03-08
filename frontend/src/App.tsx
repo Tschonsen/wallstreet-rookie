@@ -3,6 +3,7 @@ import { ConfigProvider, theme, App as AntApp } from 'antd'
 import { StoreContext, RootStore } from './stores/RootStore'
 import LoginPage from './pages/LoginPage'
 import TradingPage from './pages/TradingPage'
+import StockDetailPage from './pages/StockDetailPage'
 import ProtectedRoute from './components/ProtectedRoute'
 
 const rootStore = new RootStore()
@@ -32,6 +33,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <TradingPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/trading/:symbol"
+                element={
+                  <ProtectedRoute>
+                    <StockDetailPage />
                   </ProtectedRoute>
                 }
               />

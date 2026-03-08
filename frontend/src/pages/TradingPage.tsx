@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import { Table, Tag, Input, Button, Space } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
@@ -19,6 +20,7 @@ const SECTOR_COLORS: Record<string, string> = {
 
 const TradingPage = observer(() => {
   const { marketStore, playerStore } = useStore()
+  const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [tradeStock, setTradeStock] = useState<Stock | null>(null)
   const [tradeType, setTradeType] = useState<'BUY' | 'SELL'>('BUY')
@@ -50,7 +52,9 @@ const TradingPage = observer(() => {
       dataIndex: 'symbol',
       key: 'symbol',
       sorter: (a, b) => a.symbol.localeCompare(b.symbol),
-      render: (symbol: string) => <strong>{symbol}</strong>,
+      render: (symbol: string) => (
+        <a onClick={() => navigate(`/trading/${symbol}`)} style={{ fontWeight: 'bold' }}>{symbol}</a>
+      ),
     },
     {
       title: 'Name',
