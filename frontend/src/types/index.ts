@@ -50,6 +50,23 @@ export interface LeaderboardEntry {
   totalValue: number
 }
 
+export interface PortfolioPosition {
+  symbol: string
+  quantity: number
+  averageBuyPrice: number
+  currentPrice: number
+  positionValue: number
+  profitLoss: number
+  profitLossPercent: number
+}
+
+export interface PortfolioResponse {
+  cash: number
+  portfolioValue: number
+  totalValue: number
+  positions: PortfolioPosition[]
+}
+
 export interface AuthResponse {
   token: string
   username: string

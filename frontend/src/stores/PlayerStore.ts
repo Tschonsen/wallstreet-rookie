@@ -77,7 +77,16 @@ export class PlayerStore {
   async fetchPortfolio() {
     const response = await playerApi.getPortfolio()
     runInAction(() => {
-      this.player = response.data
+      this.player = {
+        username: this.username ?? '',
+        cash: response.data.cash,
+        totalValue: response.data.totalValue,
+        portfolio: response.data.positions.map((p) => ({
+          symbol: p.symbol,
+          quantity: p.quantity,
+          averageBuyPrice: p.averageBuyPrice,
+        })),
+      }
     })
   }
 }
