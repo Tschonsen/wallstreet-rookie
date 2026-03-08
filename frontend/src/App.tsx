@@ -2,11 +2,13 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { ConfigProvider, theme, App as AntApp } from 'antd'
 import { StoreContext, RootStore } from './stores/RootStore'
 import LoginPage from './pages/LoginPage'
+import ModeSelectPage from './pages/ModeSelectPage'
+import DashboardPage from './pages/DashboardPage'
 import TradingPage from './pages/TradingPage'
 import StockDetailPage from './pages/StockDetailPage'
 import PortfolioPage from './pages/PortfolioPage'
-import DashboardPage from './pages/DashboardPage'
 import ProtectedRoute from './components/ProtectedRoute'
+import AppLayout from './components/AppLayout'
 
 const rootStore = new RootStore()
 
@@ -26,34 +28,22 @@ function App() {
                 path="/"
                 element={
                   <ProtectedRoute>
-                    <DashboardPage />
+                    <ModeSelectPage />
                   </ProtectedRoute>
                 }
               />
               <Route
-                path="/trading"
                 element={
                   <ProtectedRoute>
-                    <TradingPage />
+                    <AppLayout />
                   </ProtectedRoute>
                 }
-              />
-              <Route
-                path="/portfolio"
-                element={
-                  <ProtectedRoute>
-                    <PortfolioPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/trading/:symbol"
-                element={
-                  <ProtectedRoute>
-                    <StockDetailPage />
-                  </ProtectedRoute>
-                }
-              />
+              >
+                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/trading" element={<TradingPage />} />
+                <Route path="/trading/:symbol" element={<StockDetailPage />} />
+                <Route path="/portfolio" element={<PortfolioPage />} />
+              </Route>
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </BrowserRouter>
