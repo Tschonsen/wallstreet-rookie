@@ -2,11 +2,13 @@ import { makeAutoObservable, runInAction } from 'mobx'
 import type { Player, PortfolioResponse } from '../types'
 import { authApi } from '../services/authApi'
 import { playerApi } from '../services/playerApi'
+import { watchlistApi } from '../services/watchlistApi'
 
 export class PlayerStore {
   player: Player | null = null
   token: string | null = localStorage.getItem('token')
   username: string | null = localStorage.getItem('username')
+  watchlist: string[] = []
   loading = false
   error: string | null = null
 
@@ -100,6 +102,27 @@ export class PlayerStore {
         quantity: p.quantity,
         averageBuyPrice: p.averageBuyPrice,
       })),
+    }
+  }
+
+  async fetchWatchlist() {
+    const response = await watchlistApi.getWatchlist()
+    runInAction(() => {
+      this.watchlist = response.data
+    })
+  }
+
+  async toggleWatchlist(symbol: string) {
+    if (this.watchlist.includes(symbol)) {
+      const response = await watchlistApi.removeFromWatchlist(symbol)
+      runInAction(() => {
+        this.watchlist = response.data
+      })
+    } else {
+      const response = await watchlistApi.addToWatchlist(symbol)
+      runInAction(() => {
+        this.watchlist = response.data
+      })
     }
   }
 }
