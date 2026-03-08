@@ -5,6 +5,7 @@ import LoginPage from './pages/LoginPage'
 import TradingPage from './pages/TradingPage'
 import StockDetailPage from './pages/StockDetailPage'
 import PortfolioPage from './pages/PortfolioPage'
+import DashboardPage from './pages/DashboardPage'
 import ProtectedRoute from './components/ProtectedRoute'
 
 const rootStore = new RootStore()
@@ -25,7 +26,7 @@ function App() {
                 path="/"
                 element={
                   <ProtectedRoute>
-                    <div>ModeSelect Page (TODO)</div>
+                    <DashboardPage />
                   </ProtectedRoute>
                 }
               />

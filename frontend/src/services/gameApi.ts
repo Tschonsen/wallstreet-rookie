@@ -3,14 +3,26 @@ import api from './api'
 
 export const gameApi = {
   startSingleplayer() {
-    return api.post<GameSession>('/game/start', { mode: 'SP' })
+    return api.post<GameSession>('/game/singleplayer')
   },
 
-  skipTime(weeks: number) {
-    return api.post<GameSession>('/game/skip', { weeks })
+  skipTime(sessionId: string, weeks: number) {
+    return api.post<GameSession>(`/game/session/${sessionId}/skip`, { weeks })
   },
 
-  joinMultiplayer(sessionId: string) {
-    return api.post<GameSession>(`/game/join/${sessionId}`)
+  joinMultiplayer() {
+    return api.post<GameSession>('/game/multiplayer/join')
+  },
+
+  getSession(sessionId: string) {
+    return api.get<GameSession>(`/game/session/${sessionId}`)
+  },
+
+  pauseSession(sessionId: string) {
+    return api.post<GameSession>(`/game/session/${sessionId}/pause`)
+  },
+
+  resumeSession(sessionId: string) {
+    return api.post<GameSession>(`/game/session/${sessionId}/resume`)
   },
 }
