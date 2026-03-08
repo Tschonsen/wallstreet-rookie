@@ -1,10 +1,12 @@
 package com.wallstreetrookie.backend.engine;
 
+import com.wallstreetrookie.backend.dto.response.LeaderboardEntry;
 import com.wallstreetrookie.backend.dto.response.StockResponse;
 import com.wallstreetrookie.backend.model.GameSession;
 import com.wallstreetrookie.backend.model.enums.GameMode;
 import com.wallstreetrookie.backend.model.enums.GameStatus;
 import com.wallstreetrookie.backend.repository.GameSessionRepository;
+import com.wallstreetrookie.backend.service.LeaderboardService;
 import com.wallstreetrookie.backend.service.PortfolioService;
 import com.wallstreetrookie.backend.service.StockService;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,7 @@ public class MultiplayerTickEngine {
     private final NewsService newsService;
     private final StockService stockService;
     private final PortfolioService portfolioService;
+    private final LeaderboardService leaderboardService;
     private final GameSessionRepository gameSessionRepository;
     private final SimpMessagingTemplate messagingTemplate;
     private final Random random = new Random();
@@ -69,6 +72,10 @@ public class MultiplayerTickEngine {
                 log.warn("Portfolio-Update für Spieler {} fehlgeschlagen", playerId);
             }
         }
+
+        // Leaderboard aktualisieren und pushen
+        List<LeaderboardEntry> leaderboard = leaderboardService.getLeaderboard();
+        messagingTemplate.convertAndSend("/topic/leaderboard", leaderboard);
 
         // Woche erhöhen (alle 35 Ticks = ~1 Woche bei 5 Tagen/Woche, 30s/Tick)
         if (tickCount % 35 == 0) {
