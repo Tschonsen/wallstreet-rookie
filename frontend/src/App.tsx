@@ -4,6 +4,7 @@ import { StoreContext, RootStore } from './stores/RootStore'
 import LoginPage from './pages/LoginPage'
 import TradingPage from './pages/TradingPage'
 import StockDetailPage from './pages/StockDetailPage'
+import PortfolioPage from './pages/PortfolioPage'
 import ProtectedRoute from './components/ProtectedRoute'
 
 const rootStore = new RootStore()
@@ -33,6 +34,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <TradingPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/portfolio"
+                element={
+                  <ProtectedRoute>
+                    <PortfolioPage />
                   </ProtectedRoute>
                 }
               />
