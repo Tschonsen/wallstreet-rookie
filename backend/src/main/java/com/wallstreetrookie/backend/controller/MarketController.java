@@ -1,13 +1,13 @@
 package com.wallstreetrookie.backend.controller;
 
+import com.wallstreetrookie.backend.dto.response.NewsResponse;
 import com.wallstreetrookie.backend.dto.response.StockResponse;
+import com.wallstreetrookie.backend.mapper.NewsMapper;
+import com.wallstreetrookie.backend.repository.NewsRepository;
 import com.wallstreetrookie.backend.service.StockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,6 +17,8 @@ import java.util.List;
 public class MarketController {
 
     private final StockService stockService;
+    private final NewsRepository newsRepository;
+    private final NewsMapper newsMapper;
 
     @GetMapping("/stocks")
     public ResponseEntity<List<StockResponse>> getAllStocks() {
@@ -26,5 +28,17 @@ public class MarketController {
     @GetMapping("/stocks/{symbol}")
     public ResponseEntity<StockResponse> getStock(@PathVariable String symbol) {
         return ResponseEntity.ok(stockService.getStock(symbol));
+    }
+
+    @GetMapping("/news")
+    public ResponseEntity<List<NewsResponse>> getNews(@RequestParam(required = false) String gameSessionId) {
+        if (gameSessionId != null) {
+            return ResponseEntity.ok(newsRepository.findByGameSessionId(gameSessionId).stream()
+                    .map(newsMapper::toResponse)
+                    .toList());
+        }
+        return ResponseEntity.ok(newsRepository.findAll().stream()
+                .map(newsMapper::toResponse)
+                .toList());
     }
 }
