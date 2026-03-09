@@ -1,8 +1,15 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { ConfigProvider, theme } from 'antd'
+import { ConfigProvider, theme, App as AntApp } from 'antd'
 import { StoreContext, RootStore } from './stores/RootStore'
 import LoginPage from './pages/LoginPage'
+import ModeSelectPage from './pages/ModeSelectPage'
+import DashboardPage from './pages/DashboardPage'
+import TradingPage from './pages/TradingPage'
+import StockDetailPage from './pages/StockDetailPage'
+import PortfolioPage from './pages/PortfolioPage'
+import LeaderboardPage from './pages/LeaderboardPage'
 import ProtectedRoute from './components/ProtectedRoute'
+import AppLayout from './components/AppLayout'
 
 const rootStore = new RootStore()
 
@@ -12,22 +19,47 @@ function App() {
       <ConfigProvider
         theme={{
           algorithm: theme.darkAlgorithm,
+          token: {
+            colorPrimary: '#1677ff',
+            colorSuccess: '#52c41a',
+            colorError: '#ff4d4f',
+            colorBgContainer: '#1f1f1f',
+            colorBgElevated: '#262626',
+            colorBgLayout: '#141414',
+            borderRadius: 6,
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+          },
         }}
       >
-        <BrowserRouter>
-          <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route
-              path="/"
-              element={
-                <ProtectedRoute>
-                  <div>ModeSelect Page (TODO)</div>
-                </ProtectedRoute>
-              }
-            />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </BrowserRouter>
+        <AntApp>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/login" element={<LoginPage />} />
+              <Route
+                path="/"
+                element={
+                  <ProtectedRoute>
+                    <ModeSelectPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                element={
+                  <ProtectedRoute>
+                    <AppLayout />
+                  </ProtectedRoute>
+                }
+              >
+                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/trading" element={<TradingPage />} />
+                <Route path="/trading/:symbol" element={<StockDetailPage />} />
+                <Route path="/portfolio" element={<PortfolioPage />} />
+                <Route path="/leaderboard" element={<LeaderboardPage />} />
+              </Route>
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </BrowserRouter>
+        </AntApp>
       </ConfigProvider>
     </StoreContext.Provider>
   )

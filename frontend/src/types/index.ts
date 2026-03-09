@@ -50,6 +50,58 @@ export interface LeaderboardEntry {
   totalValue: number
 }
 
+export interface PortfolioPosition {
+  symbol: string
+  quantity: number
+  averageBuyPrice: number
+  currentPrice: number
+  positionValue: number
+  profitLoss: number
+  profitLossPercent: number
+}
+
+export interface PortfolioResponse {
+  cash: number
+  portfolioValue: number
+  totalValue: number
+  positions: PortfolioPosition[]
+}
+
+export interface PricePoint {
+  symbol: string
+  price: number
+  change: number
+  changePercent: number
+  timestamp: string
+  gameSessionId?: string
+}
+
+export interface OrderEntry {
+  id: string
+  symbol: string
+  orderType: 'LIMIT_BUY' | 'LIMIT_SELL' | 'STOP_LOSS'
+  quantity: number
+  targetPrice: number
+  status: 'OPEN' | 'FILLED' | 'CANCELLED'
+  createdAt: string
+  filledAt: string | null
+}
+
+export interface ChatMessage {
+  username: string
+  message: string
+  timestamp: string
+}
+
+export interface TradeFeedEntry {
+  username: string
+  symbol: string
+  action: string
+  quantity: number
+  total: number
+  timestamp: string
+}
+
 export interface AuthResponse {
   token: string
   username: string

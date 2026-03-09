@@ -16,4 +16,8 @@ public class PortfolioEntry {
     private int quantity;
 
     private double averageBuyPrice;
+
+    private double shortEntryPrice;
+
+    private double marginReserved;
 }

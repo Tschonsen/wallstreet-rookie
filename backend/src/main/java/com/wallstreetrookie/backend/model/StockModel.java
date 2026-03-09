@@ -29,4 +29,6 @@ public class StockModel {
     private double initialPrice;
 
     private double volatility;
+
+    private double dividendYield;
 }
