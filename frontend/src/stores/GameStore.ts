@@ -33,9 +33,10 @@ export class GameStore {
   }
 
   async skipTime(weeks: number) {
+    if (!this.session) return
     this.loading = true
     try {
-      const response = await gameApi.skipTime(weeks)
+      const response = await gameApi.skipTime(this.session.id, weeks)
       runInAction(() => {
         this.session = response.data
       })
@@ -46,10 +47,10 @@ export class GameStore {
     }
   }
 
-  async joinMultiplayer(sessionId: string) {
+  async joinMultiplayer() {
     this.loading = true
     try {
-      const response = await gameApi.joinMultiplayer(sessionId)
+      const response = await gameApi.joinMultiplayer()
       runInAction(() => {
         this.session = response.data
       })

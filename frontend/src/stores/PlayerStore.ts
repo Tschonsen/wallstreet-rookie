@@ -1,12 +1,14 @@
 import { makeAutoObservable, runInAction } from 'mobx'
-import type { Player } from '../types'
+import type { Player, PortfolioResponse } from '../types'
 import { authApi } from '../services/authApi'
 import { playerApi } from '../services/playerApi'
+import { watchlistApi } from '../services/watchlistApi'
 
 export class PlayerStore {
   player: Player | null = null
   token: string | null = localStorage.getItem('token')
   username: string | null = localStorage.getItem('username')
+  watchlist: string[] = []
   loading = false
   error: string | null = null
 
@@ -77,7 +79,50 @@ export class PlayerStore {
   async fetchPortfolio() {
     const response = await playerApi.getPortfolio()
     runInAction(() => {
-      this.player = response.data
+      this.player = {
+        username: this.username ?? '',
+        cash: response.data.cash,
+        totalValue: response.data.totalValue,
+        portfolio: response.data.positions.map((p) => ({
+          symbol: p.symbol,
+          quantity: p.quantity,
+          averageBuyPrice: p.averageBuyPrice,
+        })),
+      }
     })
+  }
+
+  updateFromWebSocket(data: PortfolioResponse) {
+    this.player = {
+      username: this.username ?? '',
+      cash: data.cash,
+      totalValue: data.totalValue,
+      portfolio: data.positions.map((p) => ({
+        symbol: p.symbol,
+        quantity: p.quantity,
+        averageBuyPrice: p.averageBuyPrice,
+      })),
+    }
+  }
+
+  async fetchWatchlist() {
+    const response = await watchlistApi.getWatchlist()
+    runInAction(() => {
+      this.watchlist = response.data
+    })
+  }
+
+  async toggleWatchlist(symbol: string) {
+    if (this.watchlist.includes(symbol)) {
+      const response = await watchlistApi.removeFromWatchlist(symbol)
+      runInAction(() => {
+        this.watchlist = response.data
+      })
+    } else {
+      const response = await watchlistApi.addToWatchlist(symbol)
+      runInAction(() => {
+        this.watchlist = response.data
+      })
+    }
   }
 }

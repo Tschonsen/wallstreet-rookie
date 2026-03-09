@@ -3,14 +3,14 @@ import api from './api'
 
 export const tradeApi = {
   buy(symbol: string, quantity: number) {
-    return api.post<Trade>('/trade/buy', { symbol, quantity })
+    return api.post<Trade>('/trades/buy', { symbol, quantity })
   },
 
   sell(symbol: string, quantity: number) {
-    return api.post<Trade>('/trade/sell', { symbol, quantity })
+    return api.post<Trade>('/trades/sell', { symbol, quantity })
   },
 
   getHistory() {
-    return api.get<Trade[]>('/trade/history')
+    return api.get<Trade[]>('/trades/history')
   },
 }
